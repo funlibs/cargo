@@ -20,8 +20,8 @@
 #ifndef CARGO_H
 #define CARGO_H
 
-#define CARGO_TRUE  0;
-#define CARGO_FALSE 1;
+static int CARGO_TRUE = 0;
+static int CARGO_FALSE = 1;
 
 /*
  * @brief Defines a boolean flag.

@@ -49,6 +49,19 @@ static char* cargo_test(char* test_name) {
 int main(int argc, char* argv[])
 {
 
+    int i;
+    cargoInteger32("testint", &i, 4, "basic usage");
+    int b;
+    cargoBoolean("booltest", &b, CARGO_FALSE, "another usage");
+    char test[6];
+    cargoString("stringtest", &test[0], 6, "hello", "lkqjsdf qsldkfj ");
+
+    cargoParse(argc, argv);
+
+    printf("inttest %d\n", i);
+    printf("booltest %d\n", b);
+    printf("strtest %s\n", test);
+
     char* result = cargo_test(argv[1]);
 
     if (result != 0)
