@@ -45,6 +45,7 @@ static char* cargo_test(char* test_name) {
 
 }
 
+// todo test integer32 −2 147 483 648 <= x <= 2 147 483 647
 int main(int argc, char* argv[])
 {
 

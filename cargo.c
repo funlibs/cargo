@@ -26,22 +26,11 @@ void cargoBoolean(
 
 }
 
-void cargoInteger(
+void cargoInteger32(
         char* flag,
         int*  userVar,
         int   defaultValue,
         char* usage)
-{
-
-    *userVar = defaultValue;
-
-}
-
-void cargoFloat(
-        char*  flag, 
-        float* userVar,
-        float  defaultValue,
-        char*  usage)
 {
 
     *userVar = defaultValue;

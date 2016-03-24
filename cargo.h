@@ -39,32 +39,18 @@ void cargoBoolean(
         char* usage);
 
 /*
- * @brief Defines an integer flag.
+ * @brief Defines an 32 bit signed integer flag.
  *
  * @param flag The flag name
  * @param userVar Where the value will be stored
  * @param defaultValue The default value if the flag is not found
  * @param usage Flag usage
  */
-void cargoInteger(
+void cargoInteger32(
         char* flag,
         int*  userVar,
         int   defaultValue,
         char* usage);
-
-/*
- * @brief Defines a float flag.
- *
- * @param flag The flag name
- * @param userVar Where the value will be stored
- * @param defaultValue The default value if the flag is not found
- * @param usage Flag usage
- */
-void cargoFloat(
-        char*  flag, 
-        float* userVar,
-        float  defaultValue,
-        char*  usage);
 
 /*
  * @brief Defines a String flag.
