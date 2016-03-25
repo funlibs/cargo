@@ -25,7 +25,7 @@ char* cargoFlag(
 {
 
     // generate the flag name
-    char flagName[strlen(name) + 3]; // --${name}=
+    char* flagName = malloc(sizeof(char) * (strlen(name) + 3)); // --${name}=
     strcpy(&flagName[0], "--");
     strcpy(&flagName[2], name);
     strcpy(&flagName[strlen(name) + 2], "=");
@@ -82,6 +82,8 @@ char* cargoFlag(
         strcpy(content, defaultValue);
 
     }
+
+    free(flagName);
     return content;
 
 }
