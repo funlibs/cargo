@@ -1,10 +1,7 @@
 CARGO
 =====
 
-[![Build Status](https://travis-ci.org/ssbx/cargo.svg?branch=master)](https://travis-ci.org/ssbx/cargo)
-[![Build status](https://ci.appveyor.com/api/projects/status/visw2qqt04yqfttp/branch/master?svg=true)](https://ci.appveyor.com/project/ssbx/cargo/branch/master)
-
-C argument (argv) parser.
+Simple and stupid C argument (argv) parser.
 
 Build
 -----
