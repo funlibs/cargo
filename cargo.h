@@ -20,69 +20,30 @@
 #ifndef CARGO_H
 #define CARGO_H
 
-static int CARGO_TRUE = 0;
-static int CARGO_FALSE = 1;
-
 /*
- * @brief Defines a boolean flag.
- * Both form will be intepreted as true --myFlag=true or --myFlag.
+ * @brief Get the content of a flag the default value, or the string "TRUE".
+ *
+ * Example:
+ *
+ * To handle the following program arguments:
+ * ./myprog --flag1 --flag2= --flag3=hello --flag4="Hello world"
+ *
+ * char* f1 = cargoFlag("flag1", "FALSE", argc, argv); // f1 = "TRUE"
+ * char* f2 = cargoFlag("flag2", "defaultval", argc, argv); // f2 = ""
+ * char* f3 = cargoFlag("flag3", "bye", argc, argv); // f1 = "hello"
+ * char* f4 = cargoFlag("flag3", "Bye world", argc, argv); // f1 = "Hello world"
  *
  * @param flag The flag name
- * @param userVar Where the value will be stored (CARGO_TRUE | GARGO_FALSE)
  * @param defaultValue The default value if the flag is not found
- * @param usage Flag usage
- */
-void cargoBoolean(
-        char* flag,
-        int*  userVar,
-        int   defaultValue,
-        char* usage);
-
-/*
- * @brief Defines an 32 bit signed integer flag.
+ * @param argc The original main(argc,_) value
+ * @param argv The original main(_,argv) value
  *
- * @param flag The flag name
- * @param userVar Where the value will be stored
- * @param defaultValue The default value if the flag is not found
- * @param usage Flag usage
+ * @return A charra array containing the flag value
  */
-void cargoInteger32(
-        char* flag,
-        int*  userVar,
-        int   defaultValue,
-        char* usage);
-
-/*
- * @brief Defines a String flag.
- *
- * Value is truncated if userVarSize can not contain it.
- *
- * @param flag The flag name
- * @param userVar Where the value will be stored
- * @param userVarSize The lenght of userVar data char array
- * @param defaultValue The default value if the flag is not found
- * @param usage Flag usage
- */
-void cargoString(
-        char* flag, 
-        char* userVar,
-        int   userVarSize,
-        char* defaultValue,
-        char* usage);
-
-/*
- * @brief Parse arguments
- */
-void cargoParse(int argc, char* argv[]);
-
-/*
- * @brief Print flags usage to stdout
- */
-void cargoPrintUsage();
-
-/*
- * @brief Get the usage string as a null terminated char array.
- */
-char* cargoGetUsage();
+char* cargoFlag(
+        char*  flag, 
+        char*  defaultValue,
+        int    argc,
+        char** argv);
 
 #endif // CARGO_H

@@ -16,198 +16,77 @@
 #include "cargo.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define CARGO_MAX_FLAGS 20
 
-#define CARGO_INT_T 0
-#define CARGO_BOOL_T 1
-#define CARGO_STRING_T 2
 
-typedef struct {
-    char* name;
-    void* userVar;
-    int   type;
-    int   intValue;
-    char* strValue;
-    int   strSize;
-    char* usage;
-} Flag;
-
-Flag* CARGO_flags = NULL;
-int   CARGO_flagCount;
-
-void cargoBoolean(
-        char* name,
-        int*  userVar,
-        int   defaultValue,
-        char* usage)
-{
-    if (CARGO_flags == NULL) {
-        CARGO_flags = calloc(CARGO_MAX_FLAGS, sizeof(Flag));
-        CARGO_flagCount = 0;
-    }
-
-    Flag flag;
-    flag.type = CARGO_BOOL_T;
-    flag.name = name;
-    flag.userVar = (void*) userVar;
-    flag.intValue = defaultValue;
-    flag.usage = usage;
-
-    CARGO_flags[CARGO_flagCount] = flag;
-    CARGO_flagCount ++;
-
-}
-
-void cargoInteger32(
-        char* name,
-        int*  userVar,
-        int   defaultValue,
-        char* usage)
+char* cargoFlag(
+        char*  name, 
+        char*  defaultValue,
+        int    argc,
+        char** argv)
 {
 
-    if (CARGO_flags == NULL) {
-        CARGO_flags = calloc(CARGO_MAX_FLAGS, sizeof(Flag));
-        CARGO_flagCount = 0;
-    }
+    // generate the flag name
+    char flagName[strlen(name) + 3]; // --${name}=
+    strcpy(&flagName[0], "--");
+    strcpy(&flagName[2], name);
+    strcpy(&flagName[strlen(name) + 2], "=");
 
-    Flag flag;
-    flag.type = CARGO_INT_T;
-    flag.name = name;
-    flag.userVar = (void*) userVar;
-    flag.intValue = defaultValue;
-    flag.usage = usage;
+    // return value
+    char* content = NULL;
 
-    CARGO_flags[CARGO_flagCount] = flag;
-    CARGO_flagCount ++;
-
-}
-
-void cargoString(
-        char* name, 
-        char* userVar,
-        int   userVarSize,
-        char* defaultValue,
-        char* usage)
-{
-
-    if (CARGO_flags == NULL) {
-        CARGO_flags = calloc(CARGO_MAX_FLAGS, sizeof(Flag));
-        CARGO_flagCount = 0;
-    }
-
-    Flag flag;
-    flag.type = CARGO_STRING_T;
-    flag.name = name;
-    flag.userVar = (void*) userVar;
-    flag.strSize = userVarSize;
-    flag.strValue = defaultValue;
-    flag.usage = usage;
-
-    CARGO_flags[CARGO_flagCount] = flag;
-    CARGO_flagCount ++;
-
-}
-
-char* cargoGetArg(char* argument)
-{
-    return strstr(argument, "=");
-}
-
-void cargoSetIntFlag(int argc, char* argv[], Flag* flag)
-{
-    int i;
-    char searchFlag[sizeof(flag->name) + 3];
-    strcpy(searchFlag, "--");
-    strcpy(&searchFlag[2], flag->name);
-    strcpy(&searchFlag[sizeof(flag->name) + 2], "=");
-
-    for (i = 0; i < argc; i++) 
+    // iterate over argv
+    int j;
+    for (j = 0; j < argc; j++)
     {
-        char* argument = argv[i];
-        if (strncmp(argument,searchFlag, sizeof(flag->name) + 3) == 0)
-        { // found
-            char* index = cargoGetArg(argument);
-            if (index == NULL) continue;
-            char  ivalue[sizeof(index) - 1];
-            strncpy(ivalue, &index[1], sizeof(ivalue));
-            int value = atoi(ivalue);
-            int* uv= (int*) flag->userVar;
-            *uv = value;
-            break;
-        }
-    }
-}
 
-void cargoSetBoolFlag(int argc, char* argv[], Flag* flag)
-{
+        char* arg = argv[j];
 
-    int i;
-    char searchFlag[sizeof(flag->name) + 3];
-    strcpy(searchFlag, "--");
-    strcpy(&searchFlag[2], flag->name);
-    strcpy(&searchFlag[sizeof(flag->name) + 2], "=");
+        if (strncmp(flagName, arg, strlen(flagName)) == 0)
+        { // flag found with "="
 
-    for (i = 0; i < argc; i++)
-    {
-        char* argument = argv[i];
-        if (strncmp(argument, searchFlag, sizeof(flag->name) + 3) == 0)
-        {
-            int* uv = (int*) flag->userVar;
-            char* flagVal = cargoGetArg(argument);
-            if (flagVal == NULL) // olmost bit not defined
+            if (strlen(flagName) == strlen(arg)) // no content
             {
-                *uv = flag->intValue;
+
+                if (content != NULL) free(content);
+                content = malloc(1);
+                *content = '\0';
+
                 continue;
+
             }
-            if (
-                    strncmp(flagVal, "=true", 5) == 0 ||
-                    strncmp(flagVal, "=1",    2) == 0) 
+
+            // there is some content
+            if (content != NULL) free(content);
+            content = malloc(strlen(arg) - strlen(flagName) + 1);
+            strcpy(content, &arg[strlen(flagName)]);
+
+        }
+        else if (strncmp(flagName, arg, strlen(flagName) - 1) == 0)
+        { // found partial flag --${name}
+
+            // set content to true if it is the end of the str
+            if (strlen(arg) == strlen(flagName) -1)
             {
-                *uv = CARGO_TRUE;
-            } else {
-                *uv = CARGO_FALSE;
+
+                if (content != NULL) free(content);
+                content = malloc(strlen("TRUE") + 1);
+                strcpy(content, "TRUE");
 
             }
         }
-        else if (strncmp(argument, searchFlag, sizeof(flag->name) + 2) == 0)
-        {
-            int* uv = (int*) flag->userVar;
-            *uv = CARGO_TRUE;
-        }
     }
-}
 
-void cargoParse(int argc, char* argv[])
-{
+    if (content == NULL)
+    { // flag not found set default
 
-    if (CARGO_flags == NULL) return;
+        content = malloc(strlen(defaultValue) + 1);
+        strcpy(content, defaultValue);
 
-    int i;
-    Flag f;
-    for (i=0; i < CARGO_flagCount; i++)
-    {
-        f = CARGO_flags[i];
-        if (f.type == CARGO_INT_T) {
-            int* uv = (int*) f.userVar;
-            *uv = f.intValue;
-            cargoSetIntFlag(argc, argv, &f);
-        } else if (f.type == CARGO_BOOL_T) {
-            int* uv = (int*) f.userVar;
-            *uv = f.intValue;
-            cargoSetBoolFlag(argc, argv ,&f);
-        } else if (f.type == CARGO_STRING_T) {
-            char* uv = (char*) f.userVar;
-            memset(uv, '\0', f.strSize);
-            strcpy(uv , f.strValue);
-        }
     }
+    return content;
+
 }
 
-void cargoPrintUsage()
-{
-}
-
-char* cargoGetUsage()
-{
-}
