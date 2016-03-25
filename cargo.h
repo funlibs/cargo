@@ -20,7 +20,11 @@
 #ifndef CARGO_H
 #define CARGO_H
 
-/*
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
+/**
  * @brief Get the content of a flag the default value, or the string "TRUE".
  *
  * Example:
@@ -47,5 +51,9 @@ char* cargoFlag(
         char*  defaultValue,
         int    argc,
         char** argv);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // CARGO_H
