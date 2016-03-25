@@ -12,3 +12,11 @@ You can also use the fake configure script provided to set it up on unix:
 $ ./configure
 $ make
 ```
+
+Doc
+---
+Depends on Doxygen.
+```sh
+$ make cargo_doc
+```
+
