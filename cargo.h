@@ -27,18 +27,6 @@ extern "C" {
 /**
  * @brief Get the content of a flag the default value, or the string "TRUE".
  *
- * Example:
- *
- * To handle the following program arguments:
- * ./myprog --flag1 --flag2= --flag3=hello --flag4="Hello world"
- *
- * char* f1 = cargoFlag("flag1", "FALSE", argc, argv); // f1 = "TRUE"
- * char* f2 = cargoFlag("flag2", "defaultval", argc, argv); // f2 = ""
- * char* f3 = cargoFlag("flag3", "bye", argc, argv); // f1 = "hello"
- * char* f4 = cargoFlag("flag4", "Bye world", argc, argv); // f1 = "Hello world"
- * char* f5 = cargoFlag("flag5", "default", argc, argv); // f1 = "default"
- * char* f6 = cargoFlag("flag6", "FALSE", argc, argv); // f1 = "FALSE"
- *
  * @param flag The flag name
  * @param defaultValue The default value if the flag is not found
  * @param argc The original main(argc,_) value
