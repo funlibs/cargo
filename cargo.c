@@ -17,6 +17,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define FLAG_MAX_SIZE 80
+
 char* cargoFlag(
         char*  name, 
         char*  defaultValue,
@@ -25,7 +27,7 @@ char* cargoFlag(
 {
 
     // generate the flag name
-    char* flagName = malloc(sizeof(char) * (strlen(name) + 3)); // --${name}=
+    char flagName[FLAG_MAX_SIZE];
     strcpy(&flagName[0], "--");
     strcpy(&flagName[2], name);
     strcpy(&flagName[strlen(name) + 2], "=");
@@ -83,7 +85,6 @@ char* cargoFlag(
 
     }
 
-    free(flagName);
     return content;
 
 }
