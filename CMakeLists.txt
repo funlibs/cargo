@@ -4,8 +4,8 @@ project (CARGO)
 include_directories (.)
 add_library (cargo cargo.c cargo.h)
 
-add_executable(example example.c cargo.c cargo.h)
-target_link_libraries(example cargo)
+add_executable(cargo_example cargo_example.c cargo.c cargo.h)
+target_link_libraries(cargo_example cargo)
 
 find_package (Doxygen)
 if (DOXYGEN_FOUND)
