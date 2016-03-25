@@ -16,10 +16,6 @@
 #include "cargo.h"
 #include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
-
-#define CARGO_MAX_FLAGS 20
-
 
 char* cargoFlag(
         char*  name, 
