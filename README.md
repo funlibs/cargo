@@ -1,5 +1,7 @@
 CARGO
 =====
+[![Build Status](https://travis-ci.org/libgame/cargo.svg?branch=master)](https://travis-ci.org/libgame/cargo)
+[![Build status](https://ci.appveyor.com/api/projects/status/qbqgrdeuikjt6gic/branch/master?svg=true)](https://ci.appveyor.com/project/ssbx/cargo/branch/master)
 
 Simple and stupid C argument (argv) parser.
 
