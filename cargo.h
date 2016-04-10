@@ -85,6 +85,9 @@ extern "C" {
  * the string "TRUE" if the flag is defined as boolean (--myflag)
  * or the default value if neither assignment or boolean flag is defined.
  *
+ * If the flag is defined multiple time, as boolean or assignment, the value of
+ * the last flag occurence is returned.
+ *
  * @param flag The flag name
  *
  * @param defaultValue The default value if the flag is not found
