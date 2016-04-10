@@ -28,6 +28,11 @@
 #ifndef CARGO_H
 #define CARGO_H
 
+#include <string.h>
+#include <stdlib.h>
+
+#define FLAG_MAX_SIZE 80
+
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
@@ -42,14 +47,78 @@ extern "C" {
  *
  * @return A charra array containing the flag value
  */
-char* cargoFlag(
-        char*  flag, 
+static char* cargoFlag(
+        char*  name, 
         char*  defaultValue,
         int    argc,
-        char** argv);
+        char** argv)
+{
+    // generate the flag name
+    char flagName[FLAG_MAX_SIZE];
+    strcpy(&flagName[0], "--");
+    strcpy(&flagName[2], name);
+    strcpy(&flagName[strlen(name) + 2], "=");
+
+    // return value
+    char* content = NULL;
+
+    // iterate over argv
+    int j;
+    for (j = 0; j < argc; j++)
+    {
+
+        char* arg = argv[j];
+
+        if (strncmp(flagName, arg, strlen(flagName)) == 0)
+        { // flag found with "="
+
+            if (strlen(flagName) == strlen(arg)) // no content
+            {
+
+                if (content != NULL) free(content);
+                content = malloc(1);
+                *content = '\0';
+
+                continue;
+
+            }
+
+            // there is some content
+            if (content != NULL) free(content);
+            content = malloc(strlen(arg) - strlen(flagName) + 1);
+            strcpy(content, &arg[strlen(flagName)]);
+
+        }
+        else if (strncmp(flagName, arg, strlen(flagName) - 1) == 0)
+        { // found partial flag --${name}
+
+            // set content to true if it is the end of the str
+            if (strlen(arg) == strlen(flagName) -1)
+            {
+
+                if (content != NULL) free(content);
+                content = malloc(strlen("TRUE") + 1);
+                strcpy(content, "TRUE");
+
+            }
+        }
+    }
+
+    if (content == NULL)
+    { // flag not found set default
+
+        content = malloc(strlen(defaultValue) + 1);
+        strcpy(content, defaultValue);
+
+    }
+
+    return content;
+
+}
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
 #endif // CARGO_H
+

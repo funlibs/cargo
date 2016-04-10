@@ -7,8 +7,9 @@ Simple and stupid C argument (argv) parser.
 
 Build
 -----
-CARGO is build with CMake for all platforms.
+No build, include cargo.h and this is it.
 
+CARGO tests are built with CMake for all platforms.
 You can also use the fake configure script provided to set it up on unix:
 ```sh
 $ ./configure
@@ -40,7 +41,7 @@ int main(int argc, char* argv[])
     char* f3 = cargoFlag("flag3", "bye", argc, argv);           // f3 = "hello"
     char* f4 = cargoFlag("flag4", "Bye world", argc, argv);     // f4 = "Hello world"
     char* f5 = cargoFlag("flag5", "default", argc, argv);       // f5 = "default"
-    char* f6 = cargoFlag("flag5", "FALSE", argc, argv);         // f6 = "FALSE"
+    char* f6 = cargoFlag("flag6", "FALSE", argc, argv);         // f6 = "FALSE"
 
 [...]
 ```
