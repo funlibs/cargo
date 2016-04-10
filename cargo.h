@@ -23,6 +23,49 @@
  */
 
 /**
+ * @mainpage
+ * 
+ * <a target="_blank" href="https://github.com/libgame/cargo">See CARGO on GitHub</a>.
+ *
+ * @section Usage
+ * See the documentation for the cargoFlag() function.
+ *
+ * @section Example
+ * To handle the following program arguments:
+ * @code
+ * ./myprog --flag1 --flag3= --flag4="Hello world"
+ * @endcode
+ * 
+ * You could write this:
+ * @code
+ *
+ * [...]
+ *
+ * int main(int argc, char* argv[])
+ * {
+ *     char* f1 = cargoFlag("flag1", "FALSE",      argc, argv); // f1 = "TRUE"
+ *     char* f2 = cargoFlag("flag2", "FALSE",      argc, argv); // f2 = "FALSE"
+ *     char* f3 = cargoFlag("flag3", "defaultval", argc, argv); // f3 = ""
+ *     char* f4 = cargoFlag("flag4", "Bye world",  argc, argv); // f4 = "Hello world"
+ *     char* f5 = cargoFlag("flag5", "Bye world",  argc, argv); // f5 = "Bye world"
+ * 
+ * [...]
+ *
+ *     // test char array values with strcmp...
+ *
+ * [...]
+ *
+ *     free(f1);
+ *     free(f2);
+ *     free(f3);
+ *     free(f4);
+ *     free(f5);
+ *
+ * }
+ * @endcode
+ */
+
+/**
  * @file cargo.h
  */
 #ifndef CARGO_H
@@ -38,14 +81,19 @@ extern "C" {
 #endif // __cplusplus
 
 /**
- * @brief Get the content of a flag the default value, or the string "TRUE".
+ * @brief Get the content of a flag if it is an assignment flag (--myflag=),
+ * the string "TRUE" if the flag is defined as boolean (--myflag)
+ * or the default value if neither assignment or boolean flag is defined.
  *
  * @param flag The flag name
+ *
  * @param defaultValue The default value if the flag is not found
+ *
  * @param argc The original main(argc,_) value
+ *
  * @param argv The original main(_,argv) value
  *
- * @return A charra array containing the flag value
+ * @return A pointer to a char array. It is up to the user to free() this array. 
  */
 static char* cargoFlag(
         char*  name, 
