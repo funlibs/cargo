@@ -7,7 +7,7 @@ Simple and stupid C argument (argv) parser.
 
 Build
 -----
-No build, include cargo.h and this is it.
+Just include cargo.h to your project.
 
 CARGO tests are built with CMake for all platforms.
 You can also use the fake configure script provided to set it up on unix:
