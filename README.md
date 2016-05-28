@@ -1,7 +1,8 @@
 CARGO
 =====
-[![Build Status](https://travis-ci.org/libgame/cargo.svg?branch=master)](https://travis-ci.org/libgame/cargo)
-[![Build status](https://ci.appveyor.com/api/projects/status/qbqgrdeuikjt6gic/branch/master?svg=true)](https://ci.appveyor.com/project/ssbx/cargo/branch/master)
+[![Build Status](https://travis-ci.org/funlibs/cargo.svg?branch=master)](https://travis-ci.org/funlibs/cargo)
+[![Build status](https://ci.appveyor.com/api/projects/status/t8bau0etvqu1c64b/branch/master?svg=true)](https://ci.appveyor.com/project/ssbx/cargo-w8vld/branch/master)
+
 
 Simple and stupid C argument (argv) parser.
 
