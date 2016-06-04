@@ -43,24 +43,13 @@
  *
  * int main(int argc, char* argv[])
  * {
+ *
  *     char* f1 = cargoFlag("flag1", "FALSE",      argc, argv); // f1 = "TRUE"
  *     char* f2 = cargoFlag("flag2", "FALSE",      argc, argv); // f2 = "FALSE"
  *     char* f3 = cargoFlag("flag3", "defaultval", argc, argv); // f3 = ""
  *     char* f4 = cargoFlag("flag4", "Bye world",  argc, argv); // f4 = "Hello world"
  *     char* f5 = cargoFlag("flag5", "Bye world",  argc, argv); // f5 = "Bye world"
  * 
- * [...]
- *
- *     // test char array values with strcmp...
- *
- * [...]
- *
- *     free(f1);
- *     free(f2);
- *     free(f3);
- *     free(f4);
- *     free(f5);
- *
  * }
  * @endcode
  */
@@ -75,10 +64,43 @@
 #include <stdlib.h>
 
 #define FLAG_MAX_SIZE 80
+#define FLAG_MAX_NUMBER 20
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
+
+static char** CARGO_allocated_args;
+static int    CARGO_initialized = 0;
+static int    CARGO_current_arg;
+
+static void cargoCleanup()
+{
+
+    if (CARGO_initialized == 0) return;
+    if (CARGO_current_arg == 0) return;
+
+    int i;
+    for (i=0; i < CARGO_current_arg; i++)
+    {
+        free(CARGO_allocated_args[i]);
+    }
+
+    free(CARGO_allocated_args);
+
+}
+
+static void cargoInit()
+{
+
+    if (CARGO_initialized == 1) return;
+
+    CARGO_allocated_args = malloc(sizeof(char*) * FLAG_MAX_NUMBER);
+    CARGO_current_arg = 0;
+    atexit(&cargoCleanup);
+    CARGO_initialized = 1;
+
+}
 
 /**
  * @brief Get the content of a flag if it is an assignment flag (--myflag=),
@@ -104,6 +126,9 @@ static char* cargoFlag(
         int    argc,
         char** argv)
 {
+
+    cargoInit();
+
     // generate the flag name
     char flagName[FLAG_MAX_SIZE];
     strcpy(&flagName[0], "--");
@@ -162,6 +187,9 @@ static char* cargoFlag(
         strcpy(content, defaultValue);
 
     }
+
+    CARGO_allocated_args[CARGO_current_arg] = content;
+    CARGO_current_arg += 1;
 
     return content;
 
