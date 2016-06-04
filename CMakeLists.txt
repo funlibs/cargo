@@ -1,6 +1,12 @@
 cmake_minimum_required (VERSION 2.6)
-project (CARGO)
+project (Cargo)
 
+
+set(CARGO_MAJOR_VERSION 0)
+set(CARGO_MINOR_VERSION 1)
+set(CARGO_PATCH_VERSION 0)
+set(CARGO_VERSION
+    ${CARGO_MAJOR_VERSION}.${CARGO_MINOR_VERSION}.${CARGO_PATCH_VERSION})
 
 # library
 include_directories (.)
