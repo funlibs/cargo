@@ -95,7 +95,7 @@ static void cargoInit()
 
     if (CARGO_initialized == 1) return;
 
-    CARGO_allocated_args = malloc(sizeof(char*) * FLAG_MAX_NUMBER);
+    CARGO_allocated_args = (char**) malloc(sizeof(char*) * FLAG_MAX_NUMBER);
     CARGO_current_arg = 0;
     atexit(&cargoCleanup);
     CARGO_initialized = 1;
@@ -152,7 +152,7 @@ static char* cargoFlag(
             {
 
                 if (content != NULL) free(content);
-                content = malloc(1);
+                content = (char*) malloc(1);
                 *content = '\0';
 
                 continue;
@@ -161,7 +161,7 @@ static char* cargoFlag(
 
             // there is some content
             if (content != NULL) free(content);
-            content = malloc(strlen(arg) - strlen(flagName) + 1);
+            content = (char*) malloc(strlen(arg) - strlen(flagName) + 1);
             strcpy(content, &arg[strlen(flagName)]);
 
         }
@@ -173,7 +173,7 @@ static char* cargoFlag(
             {
 
                 if (content != NULL) free(content);
-                content = malloc(strlen("TRUE") + 1);
+                content = (char*) malloc(strlen("TRUE") + 1);
                 strcpy(content, "TRUE");
 
             }
@@ -183,7 +183,7 @@ static char* cargoFlag(
     if (content == NULL)
     { // flag not found set default
 
-        content = malloc(strlen(defaultValue) + 1);
+        content = (char*) malloc(strlen(defaultValue) + 1);
         strcpy(content, defaultValue);
 
     }
