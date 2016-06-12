@@ -18,6 +18,9 @@ add_test (NAME TBool     COMMAND cargo_test --type=boolean --val=TRUE)
 add_test (NAME TEmpty    COMMAND cargo_test --type=empty   --val=)
 add_test (NAME TValue    COMMAND cargo_test --type=value   --val=innerValue)
 add_test (NAME TMissing  COMMAND cargo_test --type=missing)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    add_test (NAME MemCheck  COMMAND valgrind --tool=memcheck --leak-check=full --track-origins=yes -v ./cargo_example)
+endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 
 # example
