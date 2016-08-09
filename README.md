@@ -4,7 +4,7 @@ CARGO
 [![Build status](https://ci.appveyor.com/api/projects/status/t8bau0etvqu1c64b/branch/master?svg=true)](https://ci.appveyor.com/project/ssbx/cargo-w8vld/branch/master)
 
 
-Simple and stupid C argument (argv) parser.
+Simple, stupid and portable C argument (argv) parser.
 
 Build
 -----

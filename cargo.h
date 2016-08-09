@@ -74,32 +74,29 @@ static char** CARGO_allocated_args;
 static int    CARGO_initialized = 0;
 static int    CARGO_current_arg;
 
-static void cargoCleanup()
+static void
+cargoCleanup()
 {
-
     if (CARGO_initialized == 0) return;
     if (CARGO_current_arg == 0) return;
 
     int i;
     for (i=0; i < CARGO_current_arg; i++)
-    {
         free(CARGO_allocated_args[i]);
-    }
 
     free(CARGO_allocated_args);
-
 }
 
-static void cargoInit()
+static void
+cargoInit()
 {
-
-    if (CARGO_initialized == 1) return;
+    if (CARGO_initialized == 1)
+        return;
 
     CARGO_allocated_args = (char**) malloc(sizeof(char*) * FLAG_MAX_NUMBER);
     CARGO_current_arg = 0;
     atexit(&cargoCleanup);
     CARGO_initialized = 1;
-
 }
 
 /**
@@ -120,13 +117,9 @@ static void cargoInit()
  *
  * @return A pointer to a char array. It is up to the user to free() this array. 
  */
-static char* cargoFlag(
-        char*  name, 
-        char*  defaultValue,
-        int    argc,
-        char** argv)
+static char* 
+cargoFlag(char* name, char* defaultValue, int argc, char** argv)
 {
-
     cargoInit();
 
     // generate the flag name
@@ -140,52 +133,42 @@ static char* cargoFlag(
 
     // iterate over argv
     int j;
-    for (j = 0; j < argc; j++)
-    {
-
+    for (j = 0; j < argc; j++) {
         char* arg = argv[j];
 
-        if (strncmp(flagName, arg, strlen(flagName)) == 0)
-        { // flag found with "="
+        if (strncmp(flagName, arg, strlen(flagName)) == 0) {
+            // flag found with "="
 
-            if (strlen(flagName) == strlen(arg)) // no content
-            {
-
+            if (strlen(flagName) == strlen(arg)) { // no content
                 if (content != NULL) free(content);
                 content = (char*) malloc(1);
                 *content = '\0';
 
                 continue;
-
             }
 
             // there is some content
-            if (content != NULL) free(content);
+            if (content != NULL)
+                free(content);
+
             content = (char*) malloc(strlen(arg) - strlen(flagName) + 1);
             strcpy(content, &arg[strlen(flagName)]);
 
-        }
-        else if (strncmp(flagName, arg, strlen(flagName) - 1) == 0)
-        { // found partial flag --${name}
-
+        } else if (strncmp(flagName, arg, strlen(flagName) - 1) == 0) {
+            // found partial flag --${name}
             // set content to true if it is the end of the str
-            if (strlen(arg) == strlen(flagName) -1)
-            {
-
-                if (content != NULL) free(content);
+            if (strlen(arg) == strlen(flagName) -1) {
+                if (content != NULL)
+                    free(content);
                 content = (char*) malloc(strlen("TRUE") + 1);
                 strcpy(content, "TRUE");
-
             }
         }
     }
 
-    if (content == NULL)
-    { // flag not found set default
-
+    if (content == NULL) { // flag not found set default
         content = (char*) malloc(strlen(defaultValue) + 1);
         strcpy(content, defaultValue);
-
     }
 
     CARGO_allocated_args[CARGO_current_arg] = content;
