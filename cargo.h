@@ -175,7 +175,6 @@ cargoFlag(char* name, char* defaultValue, int argc, char** argv)
     CARGO_current_arg += 1;
 
     return content;
-
 }
 
 #ifdef __cplusplus
