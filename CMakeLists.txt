@@ -23,7 +23,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 
-set (${CARGO_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR})
+set (${CARGO_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR} CACHE STRING "cargo includes")
 
 # example
 add_executable(cargo_example cargo_example.c cargo.h)
