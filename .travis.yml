@@ -11,6 +11,6 @@ compiler:
 before_install:
     - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get update; sudo apt-get install valgrind; fi
 
-script: 
+script:
     - ./configure
-    - cd build && make && make test ARGS=--output-on-failure
+    - cd _build && make && make test ARGS=--output-on-failure
